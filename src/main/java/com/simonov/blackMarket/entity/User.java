@@ -24,4 +24,11 @@ public class User implements Identifiable<Integer> {
     public User(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public User(int id,String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+        this.id=id;
+    }
+
+
 }

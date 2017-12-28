@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 @RepositoryRestResource(collectionResourceRel = "people", path = "people")
@@ -15,7 +16,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     User findByPhoneNumber(String phoneNumber);
 
     @RestResource(rel = "current-user", path = "current-user")
-    @Query("select user from User user where user.phoneNumber = ?#{ principal?.username }")
+//    @Query("select user from User user where user.phoneNumber = ?#{principal.username}") //session auth
+    @Query("select user from User user where user.phoneNumber = ?#{principal}") //JWT auth
     User findMyself();
 
     @Override
@@ -32,11 +34,11 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Override
     boolean exists(Integer aLong);
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     Iterable<User> findAll();
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     Iterable<User> findAll(Iterable<Integer> longs);
 
@@ -59,6 +61,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Override
     void deleteAll();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RestResource(rel = "my", path = "my")
     @Modifying
     @Transactional

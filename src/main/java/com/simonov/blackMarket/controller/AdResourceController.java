@@ -7,6 +7,7 @@ import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,6 +50,19 @@ public class AdResourceController {
         if (ad == null || ad.getStatus() != Ad.Status.PUBLISHED) {
             throw new ResourceNotFoundException();
         }
+    }
+
+    @RequestMapping(value = "/ads/testCustomFieldInJWT", method = RequestMethod.GET)
+    @ResponseBody
+    public String testCustomFieldInJWT(/*DefaultOAuth2AccessToken accessToken  - always null,*/ OAuth2Authentication authentication) {
+//        Map<String, Object> additionalInfo = accessToken.getAdditionalInformation();
+
+//        String customInfo = (String) additionalInfo.get("organization");
+
+//        Collection<? extends GrantedAuthority> authorities = (Collection<? extends GrantedAuthority>) additionalInfo.get("authorities");
+        // Play with authorities
+
+        return "result";
     }
 
 }
